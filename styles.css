@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  .calculator {
+    margin-top: 20px;
+  }
+  
+  input[type="text"],
+  select,
+  button {
+    padding: 8px;
+    margin: 5px;
+    font-size: 16px;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  #result {
+    width: 200px;
+  }
+  
