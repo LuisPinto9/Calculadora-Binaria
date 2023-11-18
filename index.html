@@ -10,12 +10,15 @@
   <div class="calculator">
     <input type="text" id="num1" placeholder="Número 1">
     <select id="operator">
-      <option value="add">+</option>
-      <option value="subtract">-</option>
-      <option value="multiply">*</option>
-      <option value="divide">/</option>
+      <option value="add">Suma (+)</option>
+      <option value="subtract">Resta (-)</option>
+      <option value="multiply">Multiplicación (*)</option>
+      <option value="divide">División (/)</option>
+      <option value="leftShift">Desplazamiento Izquierda (<<)</option>
+      <option value="rightShift">Desplazamiento Derecha (>>)</option>
     </select>
     <input type="text" id="num2" placeholder="Número 2">
+    <input type="number" id="bits" placeholder="Número de bits">
     <button onclick="calculate()">Calcular</button>
     <input type="text" id="result" placeholder="Resultado" readonly>
   </div>
