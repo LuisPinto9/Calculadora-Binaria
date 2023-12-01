@@ -1,43 +1,3 @@
-function calculate() {
-  const num1 = document.getElementById("num1").value;
-  const num2 = document.getElementById("num2").value;
-  const operator = document.getElementById("operator").value;
-  const bits = parseInt(document.getElementById("bits").value); // Número de bits seleccionados
-  let result;
-
-  switch (operator) {
-    case "add":
-      result = sumBinary(num1, num2, bits);
-      break;
-    case "subtract":
-      result = subtractBinary(num1, num2, bits);
-      break;
-    case "multiply":
-      result = multiplyBinary(num1, num2, bits);
-      break;
-    case "divide":
-      result = divideBinary(num1, num2, bits);
-      break;
-    case "leftShift":
-      result = leftShiftBinary(num1, bits);
-      break;
-    case "rightShift":
-      result = rightShiftBinary(num1, bits);
-      break;
-    default:
-      break;
-  }
-
-  if (typeof result === "object") {
-    // En el caso de división, muestra tanto el cociente como el residuo
-    document.getElementById(
-      "result"
-    ).value = `Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
-  } else {
-    document.getElementById("result").value = result;
-  }
-}
-
 function complementoDos(decimal, bits) {
   if (decimal >= 0) {
     return decimalToBinary(decimal, bits); // Si es positivo, devuelve la representación binaria normal
@@ -76,6 +36,18 @@ function binaryToDecimal(binary) {
   return parseInt(binary, 2);
 }
 
+function complementoDosToDecimal(binary) {
+  return binary
+    .split("")
+    .reverse()
+    .map((bit, index) =>
+      binary.length - 1 == index
+        ? Math.pow(2, index) * bit * -1
+        : Math.pow(2, index) * bit
+    )
+    .reduce((a, b) => a + b, 0);
+}
+
 function sumBinary(num1, num2, bits) {
   // Convierte los números binarios a decimales
   const decimal1 = binaryToDecimal(num1);
@@ -102,12 +74,18 @@ function subtractBinary(num1, num2, bits) {
   const decimal1 = binaryToDecimal(num1);
   const decimal2 = binaryToDecimal(num2);
 
+  console.log(decimal1);
+
   // Realiza la resta decimal
   let difference = decimal1 - decimal2;
+
+  console.log(difference);
 
   // Verifica si hay sobreflujo o subflujo
   const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
   const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
+
+  console.log(maxDecimalValue + " " + minDecimalValue);
 
   // Si hay sobreflujo o subflujo, ajusta el valor
   if (difference > maxDecimalValue || difference < minDecimalValue) {
@@ -210,4 +188,43 @@ function rightShiftBinary(num, bits) {
   return complementoDos(shifted, bits);
 }
 
-// Lógica para obtener los valores del usuario, realizar las operaciones y mostrar los resultados en pantalla.
+function calculate() {
+  const num1 = document.getElementById("num1").value;
+  const num2 = document.getElementById("num2").value;
+  const operator = document.getElementById("operator").value;
+  const bits = parseInt(document.getElementById("bits").value); // Número de bits seleccionados
+  let result;
+
+  switch (operator) {
+    case "add":
+      result = sumBinary(num1, num2, bits);
+      break;
+    case "subtract":
+      result = subtractBinary(num1, num2, bits);
+      break;
+    case "multiply":
+      result = multiplyBinary(num1, num2, bits);
+      break;
+    case "divide":
+      result = divideBinary(num1, num2, bits);
+      break;
+    case "leftShift":
+      result = leftShiftBinary(num1, bits);
+      break;
+    case "rightShift":
+      result = rightShiftBinary(num1, bits);
+      break;
+    default:
+      break;
+  }
+
+  if (typeof result === "object") {
+    // En el caso de división, muestra tanto el cociente como el residuo
+    document.getElementById(
+      "result"
+    ).value = `Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
+  } else {
+    document.getElementById("result").value = result;
+    document.getElementById("result-decimal").value = complementoDosToDecimal(result)
+  }
+}
