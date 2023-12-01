@@ -28,13 +28,13 @@
           <div>
             <span>Número 1</span>
             <br />
-            <input type="text" id="num1" />
+            <input type="text" id="num1" onblur="convertToDecimal('num1')" />
             <input
-            type="text"
-            id="num1-decimal"
-            placeholder="Número 1 en decimal"
-            readonly
-          />
+              type="text"
+              id="num1-decimal"
+              placeholder="Número 1 en decimal"
+              readonly
+            />
           </div>
           <div>
             <select id="operator">
@@ -49,13 +49,21 @@
           <div>
             <span>Número 2 </span>
             <br />
-            <input type="text" id="num2" />
+            <!-- <input type="text" id="num2" />
             <input
-            type="text"
-            id="num2-decimal"
-            placeholder="Número 2 en decimal"
-            readonly
-          />
+              type="text"
+              id="num2-decimal"
+              placeholder="Número 2 en decimal"
+              readonly
+            /> -->
+
+            <input type="text" id="num2" onblur="convertToDecimal('num2')" />
+            <input
+              type="text"
+              id="num2-decimal"
+              placeholder="Número 2 en decimal"
+              readonly
+            />
           </div>
           <div>
             <button class="btn btn-primary" onclick="calculate()">
@@ -72,6 +80,9 @@
               placeholder="Resultado en decimal"
               readonly
             />
+
+
+            
           </div>
         </div>
       </div>

@@ -36,17 +36,7 @@ function binaryToDecimal(binary) {
   return parseInt(binary, 2);
 }
 
-function complementoDosToDecimal(binary) {
-  return binary
-    .split("")
-    .reverse()
-    .map((bit, index) =>
-      binary.length - 1 == index
-        ? Math.pow(2, index) * bit * -1
-        : Math.pow(2, index) * bit
-    )
-    .reduce((a, b) => a + b, 0);
-}
+
 
 function sumBinary(num1, num2, bits) {
   // Convierte los números binarios a decimales
@@ -189,6 +179,7 @@ function calculate() {
   const num2 = document.getElementById("num2").value;
   const operator = document.getElementById("operator").value;
   const bits = parseInt(document.getElementById("bits").value); // Número de bits seleccionados
+
   let result;
 
   switch (operator) {
@@ -227,6 +218,23 @@ function calculate() {
       complementoDosToDecimal(result);
   }
 }
+function convertToDecimal(inputId) {
+  const binaryValue = document.getElementById(inputId).value;
+  const decimalValue = complementoDosToDecimal(binaryValue);
+  document.getElementById(inputId + "-decimal").value = decimalValue;
+}
+function complementoDosToDecimal(binary) {
+  return binary
+    .split("")
+    .reverse()
+    .map((bit, index) =>
+      binary.length - 1 == index
+        ? Math.pow(2, index) * bit * -1
+        : Math.pow(2, index) * bit
+    )
+    .reduce((a, b) => a + b, 0);
+}
+
 
 function shiftsNum1() {
   const num1 = document.getElementById("num1").value;
