@@ -36,8 +36,6 @@ function binaryToDecimal(binary) {
   return parseInt(binary, 2);
 }
 
-
-
 function sumBinary(num1, num2, bits) {
   // Convierte los números binarios a decimales
   const decimal1 = binaryToDecimal(num1);
@@ -82,19 +80,27 @@ function subtractBinary(num1, num2, bits) {
 
 function multiplyBinary(num1, num2, bits) {
   // Convierte los números binarios a decimales
-  const decimal1 = binaryToDecimal(num1);
-  const decimal2 = binaryToDecimal(num2);
+  const decimal1 = complementoDosToDecimal(num1);
+  const decimal2 = complementoDosToDecimal(num2);
 
   // Realiza la multiplicación decimal
   let product = decimal1 * decimal2;
 
   // Verifica si hay sobreflujo o subflujo
   const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
+  console.log(maxDecimalValue);
   const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
+  console.log(minDecimalValue);
 
   // Si hay sobreflujo o subflujo, ajusta el valor
   if (product > maxDecimalValue || product < minDecimalValue) {
-    product = product & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
+    alert(
+      `El resultado de la multiplicación se sale del rango de números repressentables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
+        bits * 2
+      } bits`
+    );
+    product = "0";
+    // product = product & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
   }
 
   // Convierte el resultado a binario en complemento a 2
@@ -211,8 +217,11 @@ function calculate() {
     ).value = `Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
     document.getElementById(
       "result-decimal"
-    ).value = `Cociente: ${complementoDosToDecimal(result.quotient)}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
+    ).value = `Cociente: ${complementoDosToDecimal(
+      result.quotient
+    )}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
   } else {
+    // result = "0" + result
     document.getElementById("result").value = result;
     document.getElementById("result-decimal").value =
       complementoDosToDecimal(result);
@@ -223,7 +232,9 @@ function convertToDecimal(inputId) {
   const decimalValue = complementoDosToDecimal(binaryValue);
   document.getElementById(inputId + "-decimal").value = decimalValue;
 }
+
 function complementoDosToDecimal(binary) {
+  // binary = "0" + binary
   return binary
     .split("")
     .reverse()
@@ -234,7 +245,6 @@ function complementoDosToDecimal(binary) {
     )
     .reduce((a, b) => a + b, 0);
 }
-
 
 function shiftsNum1() {
   const num1 = document.getElementById("num1").value;
@@ -252,7 +262,7 @@ function shiftsNum1() {
     default:
       break;
   }
-  document.getElementById("num1").value = result
+  document.getElementById("num1").value = result;
 }
 
 function shiftsNum2() {
@@ -271,5 +281,5 @@ function shiftsNum2() {
     default:
       break;
   }
-  document.getElementById("num2").value = result
+  document.getElementById("num2").value = result;
 }
