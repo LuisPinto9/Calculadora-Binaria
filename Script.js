@@ -74,18 +74,12 @@ function subtractBinary(num1, num2, bits) {
   const decimal1 = binaryToDecimal(num1);
   const decimal2 = binaryToDecimal(num2);
 
-  console.log(decimal1);
-
   // Realiza la resta decimal
   let difference = decimal1 - decimal2;
-
-  console.log(difference);
 
   // Verifica si hay sobreflujo o subflujo
   const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
   const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
-
-  console.log(maxDecimalValue + " " + minDecimalValue);
 
   // Si hay sobreflujo o subflujo, ajusta el valor
   if (difference > maxDecimalValue || difference < minDecimalValue) {
