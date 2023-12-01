@@ -113,8 +113,10 @@ function multiplyBinary(num1, num2, bits) {
 
 function divideBinary(num1, num2, bits) {
   // Convierte los números binarios a decimales
-  const decimal1 = binaryToDecimal(num1);
-  const decimal2 = binaryToDecimal(num2);
+  const decimal1 = complementoDosToDecimal(num1);
+  console.log(decimal1);
+  const decimal2 = complementoDosToDecimal(num2);
+  console.log(decimal2);
 
   // Manejo de división por cero
   if (decimal2 === 0) {
@@ -213,12 +215,53 @@ function calculate() {
   }
 
   if (typeof result === "object") {
-    // En el caso de división, muestra tanto el cociente como el residuo
     document.getElementById(
       "result"
     ).value = `Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
+    document.getElementById(
+      "result-decimal"
+    ).value = `Cociente: ${complementoDosToDecimal(result.quotient)}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
   } else {
     document.getElementById("result").value = result;
-    document.getElementById("result-decimal").value = complementoDosToDecimal(result)
+    document.getElementById("result-decimal").value =
+      complementoDosToDecimal(result);
   }
+}
+
+function shiftsNum1() {
+  const num1 = document.getElementById("num1").value;
+  const operator = document.getElementById("operator").value;
+  const bits = parseInt(document.getElementById("bits").value); // Número de bits seleccionados
+  let result;
+
+  switch (operator) {
+    case "leftShift":
+      result = leftShiftBinary(num1, bits);
+      break;
+    case "rightShift":
+      result = rightShiftBinary(num1, bits);
+      break;
+    default:
+      break;
+  }
+  document.getElementById("num1").value = result
+}
+
+function shiftsNum2() {
+  const num2 = document.getElementById("num2").value;
+  const operator = document.getElementById("operator").value;
+  const bits = parseInt(document.getElementById("bits").value); // Número de bits seleccionados
+  let result;
+
+  switch (operator) {
+    case "leftShift":
+      result = leftShiftBinary(num2, bits);
+      break;
+    case "rightShift":
+      result = rightShiftBinary(num2, bits);
+      break;
+    default:
+      break;
+  }
+  document.getElementById("num2").value = result
 }
