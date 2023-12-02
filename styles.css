@@ -1,21 +1,70 @@
 body {
-    font-family: Arial, sans-serif;
-    margin-top: 50px;
-  }
-  
-  h1 {
-    color: #333;
-  }
-  
-  input[type="text"],
-  select,
-  button {
-    padding: 8px;
-    margin: 5px;
-    font-size: 16px;
-  }
-  
-  #result {
-    width: 200px;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin-top: 50px;
+}
+
+h1 {
+  color: #333;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: none;
+}
+
+input[type="number"],
+input[type="text"],
+select,
+button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+}
+
+input[type="text"] {
+  width: 100%;
+}
+
+#result {
+  width: 100%;
+}
+
+/* Estilos para el teclado */
+.col-md-9 {
+  border-right: 1px solid #dee2e6;
+  padding-right: 15px;
+}
+
+.col-md-9 button {
+  margin-bottom: 10px; /* Ajustar la separación vertical entre los botones */
+  font-size: 20px; /* Ajustar el tamaño de los números del teclado */
+}
+
+.col-md-3 {
+  padding-left: 15px;
+}
+
+.btn-secondary,
+.btn-primary {
+  width: 100%;
+  margin: 5px;
+  font-size: 18px;
+  height: 60px;
+}
+
+.row {
+  margin-bottom: 10px;
+}

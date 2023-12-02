@@ -15,93 +15,277 @@
     <div
       class="container d-flex align-items-center justify-content-center pt-5"
     >
-      <div class="card">
-        <div class="card-header" style="background-color: transparent;">
-          <h1 style="text-align: center">Calculadora Binaria</h1>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card" style="flex: 1; margin-right: 10px">
+            <div class="card-header" style="background-color: #f8f9fa">
+              <h1 style="text-align: center">Calculadora Binaria</h1>
+            </div>
+            <div class="card-body">
+              <div class="p-2 pt-0 text-center">
+                <span>Número de bits</span>
+                <br />
+                <input type="number" id="bits" placeholder="Número de bits" />
+              </div>
+              <div class="d-flex p-2">
+                <div>
+                  <span>Número 1 en binario</span>
+                  <br />
+                  <input
+                    type="text"
+                    id="num1"
+                    onblur="convertToDecimal('num1')"
+                    placeholder="Número 1 en binario"
+                  />
+                </div>
+                <div>
+                  <span>Número 1 en decimal</span>
+                  <br />
+                  <input
+                    type="text"
+                    id="num1-decimal"
+                    placeholder="Número 1 en decimal"
+                  />
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <select id="operator">
+                  <option value="add">Suma (+)</option>
+                  <option value="subtract">Resta (-)</option>
+                  <option value="multiply">Multiplicación (*)</option>
+                  <option value="divide">División (/)</option>
+                  <option value="leftShift">
+                    Desplazamiento Izquierda (<<)
+                  </option>
+                  <option value="rightShift">
+                    Desplazamiento Derecha (>>)
+                  </option>
+                </select>
+              </div>
+              <div class="d-flex p-2">
+                <div>
+                  <span>Número 2 en binario</span>
+                  <br />
+                  <input
+                    type="text"
+                    id="num2"
+                    onblur="convertToDecimal('num2')"
+                    placeholder="Número 2 en binario"
+                  />
+                </div>
+                <div>
+                  <span>Número 2 en decimal</span>
+                  <br />
+                  <input
+                    type="text"
+                    id="num2-decimal"
+                    placeholder="Número 2 en decimal"
+                  />
+                </div>
+              </div>
+              <div class="p-2 text-center">
+                <button
+                  class="btn btn-primary"
+                  style="width: 100% !important"
+                  onclick="calculate()"
+                >
+                  Calcular
+                </button>
+              </div>
+              <div class="d-flex p-2">
+                <div>
+                  <span>Resultado en binario</span>
+                  <br />
+                  <input
+                    type="text"
+                    id="result"
+                    placeholder="Resultado en binario"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <span>Resultado en decimal</span>
+                  <br />
+                  <input
+                    type="text"
+                    id="result-decimal"
+                    placeholder="Resultado en decimal"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="p-2 pt-0 text-center">
-            <span>Número de bits</span>
-            <br />
-            <input type="number" id="bits" placeholder="Número de bits" />
-          </div>
-          <div class="d-flex p-2">
-            <div>
-              <span>Número 1 en binario</span>
-              <br />
-              <input
-                type="text"
-                id="num1"
-                onblur="convertToDecimal('num1')"
-                placeholder="Número 1 en binario"
-              />
+
+        <div class="col-md-6">
+          <div class="card" style="flex: 1; margin-right: 10px">
+            <div class="card-header" style="background-color: #f8f9fa">
+              <!-- <h1 style="text-align: center">Teclado</h1> -->
             </div>
-            <div>
-              <span>Número 1 en decimal</span>
-              <br />
-              <input
-                type="text"
-                id="num1-decimal"
-                placeholder="Número 1 en decimal"
-              />
-            </div>
-          </div>
-          <div class="p-2 text-center">
-            <select id="operator">
-              <option value="add">Suma (+)</option>
-              <option value="subtract">Resta (-)</option>
-              <option value="multiply">Multiplicación (*)</option>
-              <option value="divide">División (/)</option>
-              <option value="leftShift">Desplazamiento Izquierda (<<)</option>
-              <option value="rightShift">Desplazamiento Derecha (>>)</option>
-            </select>
-          </div>
-          <div class="d-flex p-2">
-            <div>
-              <span>Número 2 en binario</span>
-              <br />
-              <input
-                type="text"
-                id="num2"
-                onblur="convertToDecimal('num2')"
-                placeholder="Número 2 en binario"
-              />
-            </div>
-            <div>
-              <span>Número 2 en decimal</span>
-              <br />
-              <input
-                type="text"
-                id="num2-decimal"
-                placeholder="Número 2 en decimal"
-              />
-            </div>
-          </div>
-          <div class="p-2 text-center">
-            <button class="btn btn-primary" style="width: 100% !important;" onclick="calculate()">
-              Calcular
-            </button>
-          </div>
-          <div class="d-flex p-2">
-            <div>
-              <span>Resultado en binario</span>
-              <br />
-              <input type="text" id="result" placeholder="Resultado en binario" readonly />
-            </div>
-            <div>
-              <span>Resultado en decimal</span>
-              <br />
-              <input
-                type="text"
-                id="result-decimal"
-                placeholder="Resultado en decimal"
-                readonly
-              />
+            <div class="card-body">
+              <div class="container mt-4">
+                <div class="row">
+                  <!-- Teclado - Números -->
+                  <div class="col-md-9">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('1')"
+                        >
+                          1
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('2')"
+                        >
+                          2
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('3')"
+                        >
+                          3
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('4')"
+                        >
+                          4
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('5')"
+                        >
+                          5
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('6')"
+                        >
+                          6
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('7')"
+                        >
+                          7
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('8')"
+                        >
+                          8
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('9')"
+                        >
+                          9
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('<')"
+                        >
+                          &lt;
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('0')"
+                        >
+                          0
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="appendToNum('>')"
+                        >
+                          &gt;
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Teclado - Operadores -->
+                  <div class="col-md-3">
+                    <button
+                      class="btn btn-secondary btn-block"
+                      onclick="appendToNum('+')"
+                    >
+                      +
+                    </button>
+                    <button
+                      class="btn btn-secondary btn-block"
+                      onclick="appendToNum('-')"
+                    >
+                      -
+                    </button>
+                    <button
+                      class="btn btn-secondary btn-block"
+                      onclick="appendToNum('*')"
+                    >
+                      *
+                    </button>
+                    <button
+                      class="btn btn-secondary btn-block"
+                      onclick="appendToNum('/')"
+                    >
+                      /
+                    </button>
+                    <button
+                      class="btn btn-secondary btn-block"
+                      onclick="clearAll()"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      class="btn btn-secondary btn-block"
+                      onclick="clearEntry()"
+                    >
+                      Borrar
+                    </button>
+                    <button
+                      class="btn btn-primary btn-block"
+                      onclick="calculate()"
+                    >
+                      =
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
