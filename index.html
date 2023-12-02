@@ -16,7 +16,7 @@
       class="container d-flex align-items-center justify-content-center pt-5"
     >
       <div class="row">
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="card" style="flex: 1; margin-right: 10px">
             <div class="card-header" style="background-color: #f8f9fa">
               <h1 style="text-align: center">Calculadora Binaria</h1>
@@ -116,12 +116,17 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="col-md-6">
-          <div class="card" style="flex: 1; margin-right: 10px">
-            <div class="card-header" style="background-color: #f8f9fa">
-              <!-- <h1 style="text-align: center">Teclado</h1> -->
+        <div>
+          <div class="card">
+            <div
+              class="card-header d-flex justify-content-center align-items-center"
+            >
+              <div>
+                <h5 id="num" style="text-align: center"></h5>
+                <h5 id="num-decimal" style="text-align: center"></h5>
+              </div>
             </div>
             <div class="card-body">
               <div class="container mt-4">
@@ -129,10 +134,18 @@
                   <!-- Teclado - Números -->
                   <div class="col-md-9">
                     <div class="row">
+                      <button
+                        class="btn btn-secondary btn-block"
+                        onclick="appendToNum('-')"
+                        id="btn--"
+                      >
+                        -
+                      </button>
                       <div class="col-md-4">
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('1')"
+                          id="btn-1"
                         >
                           1
                         </button>
@@ -141,6 +154,8 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('2')"
+                          id="btn-2"
+                          hidden
                         >
                           2
                         </button>
@@ -149,6 +164,8 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('3')"
+                          id="btn-3"
+                          hidden
                         >
                           3
                         </button>
@@ -159,6 +176,8 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('4')"
+                          id="btn-4"
+                          hidden
                         >
                           4
                         </button>
@@ -167,6 +186,8 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('5')"
+                          id="btn-5"
+                          hidden
                         >
                           5
                         </button>
@@ -175,6 +196,8 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('6')"
+                          id="btn-6"
+                          hidden
                         >
                           6
                         </button>
@@ -185,6 +208,8 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('7')"
+                          id="btn-7"
+                          hidden
                         >
                           7
                         </button>
@@ -193,6 +218,8 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('8')"
+                          id="btn-8"
+                          hidden
                         >
                           8
                         </button>
@@ -201,6 +228,8 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('9')"
+                          id="btn-9"
+                          hidden
                         >
                           9
                         </button>
@@ -211,14 +240,16 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('<')"
+                          id="btn-<"
                         >
-                          &lt;
+                          <
                         </button>
                       </div>
                       <div class="col-md-4">
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('0')"
+                          id="btn-0"
                         >
                           0
                         </button>
@@ -227,14 +258,57 @@
                         <button
                           class="btn btn-secondary btn-block"
                           onclick="appendToNum('>')"
+                          id="btn->"
                         >
-                          &gt;
+                          >
                         </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="changeMode(true)"
+                          id="btn-binary"
+                        >
+                          Binario
+                        </button>
+                      </div>
+                      <div class="col-md-4">
+                        <button
+                          class="btn btn-secondary btn-block"
+                          onclick="changeMode(false)"
+                          id="btn-decimal"
+                        >
+                          Decimal
+                        </button>
+                      </div>
+                      <div
+                        class="col-md-4 justify-content-center d-flex align-items-center"
+                        onchange="changeBits()"
+                      >
+                        <select id="bits-options">
+                          <option value="4">4 bits</option>
+                          <option value="8">8 bits</option>
+                          <option value="16">16 bits</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                   <!-- Teclado - Operadores -->
                   <div class="col-md-3">
+                    <button
+                      class="btn btn-secondary btn-block"
+                      onclick="clearAll()"
+                    >
+                      Limpiar
+                    </button>
+                    <button
+                      class="btn btn-secondary btn-block"
+                      onclick="clearEntry()"
+                    >
+                      Borrar
+                    </button>
                     <button
                       class="btn btn-secondary btn-block"
                       onclick="appendToNum('+')"
@@ -243,9 +317,9 @@
                     </button>
                     <button
                       class="btn btn-secondary btn-block"
-                      onclick="appendToNum('-')"
+                      onclick="appendToNum('—')"
                     >
-                      -
+                      —
                     </button>
                     <button
                       class="btn btn-secondary btn-block"
@@ -258,18 +332,6 @@
                       onclick="appendToNum('/')"
                     >
                       /
-                    </button>
-                    <button
-                      class="btn btn-secondary btn-block"
-                      onclick="clearAll()"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      class="btn btn-secondary btn-block"
-                      onclick="clearEntry()"
-                    >
-                      Borrar
                     </button>
                     <button
                       class="btn btn-primary btn-block"

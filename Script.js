@@ -1,3 +1,11 @@
+var mode = true;
+const operators = ["—", "+", "*", "/", ">", "<"];
+var bits = "4";
+
+function changeBits() {
+  bits = document.getElementById("bits-options").value;
+}
+
 function complementoDos(decimal, bits) {
   if (decimal >= 0) {
     return decimalToBinary(decimal, bits); // Si es positivo, devuelve la representación binaria normal
@@ -283,3 +291,162 @@ function shiftsNum2() {
   }
   document.getElementById("num2").value = result;
 }
+
+function appendToNum(digit) {
+  let num = document.getElementById("num").textContent;
+  let numDecimal = document.getElementById("num-decimal").textContent;
+  let operatorCount = 0;
+  let operator = "";
+
+  for (let i = 0; i < operators.length; i++) {
+    if (num.includes(operators[i])) {
+      if (operatorCount == 0) {
+        operator = operators[i];
+      }
+      operatorCount++;
+    }
+  }
+
+  if (
+    operatorCount < 1 ||
+    (operatorCount === 1 && !operators.includes(digit))
+  ) {
+    if (mode) {
+      if (operatorCount == 1) {
+        document.getElementById("num").textContent = num + digit;
+        let num1 = num + digit;
+        const decimalValues = num1
+          .split(operator)
+          .map((value) => complementoDosToDecimal(value))
+          .join(operator);
+        document.getElementById("num-decimal").textContent = decimalValues;
+      } else {
+        document.getElementById("num").textContent = num + digit;
+        let decimalValues = "";
+        operators.includes(digit)
+          ? (decimalValues = numDecimal + digit)
+          : (decimalValues = complementoDosToDecimal(num + digit));
+        document.getElementById("num-decimal").textContent = decimalValues;
+      }
+    } else {
+      if (operatorCount == 1) {
+        document.getElementById("num-decimal").textContent = numDecimal + digit;
+        let numDecimal1 = numDecimal + digit;
+        const binary = numDecimal1
+          .split(operator)
+          .map((value) => complementoDos(value, bits))
+          .join(operator);
+        document.getElementById("num").textContent = binary;
+      } else {
+        document.getElementById("num-decimal").textContent = numDecimal + digit;
+        let binary = "";
+        operators.includes(digit)
+          ? (binary = num + digit)
+          : (binary = complementoDos(numDecimal + digit, bits));
+        document.getElementById("num").textContent = binary;
+      }
+    }
+  } else {
+    alert("No se puede ingresar más de un operador.");
+  }
+}
+
+function clearEntry() {
+  let num = document.getElementById("num").textContent;
+  let numDecimal = document.getElementById("num-decimal").textContent;
+  let operator = "";
+  let operator1 = "";
+  let operatorCount = 0;
+  let operatorCount1 = 0;
+
+  if (mode) {
+    if (num.length > 0) {
+      num = num.slice(0, -1); // Elimina el último carácter
+      document.getElementById("num").textContent = num;
+      for (let i = 0; i < operators.length; i++) {
+        if (num.includes(operators[i])) {
+          if (operatorCount == 0) {
+            operator = operators[i];
+          }
+          operatorCount++;
+        }
+      }
+      if (operatorCount == 1) {
+        const decimalValues = num
+          .split(operator)
+          .map((value) => complementoDosToDecimal(value))
+          .join(operator);
+        document.getElementById("num-decimal").textContent = decimalValues;
+      } else {
+        const decimalValues = complementoDosToDecimal(num);
+        document.getElementById("num-decimal").textContent = decimalValues;
+      }
+      if (document.getElementById("num-decimal").textContent == "0") {
+        document.getElementById("num-decimal").textContent = "";
+      }
+    }
+  } else {
+    if (numDecimal.length > 0) {
+      numDecimal = numDecimal.slice(0, -1); // Elimina el último carácter
+      document.getElementById("num-decimal").textContent = numDecimal;
+      for (let i = 0; i < operators.length; i++) {
+        if (numDecimal.includes(operators[i])) {
+          if (operatorCount1 == 0) {
+            operator1 = operators[i];
+          }
+          operatorCount1++;
+        }
+      }
+      if (operatorCount1 == 1) {
+        const binary = numDecimal
+          .split(operator1)
+          .map((value) => complementoDos(value, bits))
+          .join(operator1);
+        document.getElementById("num").textContent = binary;
+      } else {
+        const binary = complementoDos(numDecimal, bits);
+        document.getElementById("num").textContent = binary;
+      }
+      if (parseInt(document.getElementById("num").textContent) == 0) {
+        document.getElementById("num").textContent = "";
+      }
+    }
+  }
+}
+
+function clearAll() {
+  let num = document.getElementById("num").textContent;
+  let numDecimal = document.getElementById("num-decimal").textContent;
+  if (num.length > 0 || numDecimal.length > 0) {
+    document.getElementById("num").textContent = "";
+    document.getElementById("num-decimal").textContent = "";
+  }
+}
+
+function changeMode(mode1) {
+  const buttonBinary = document.getElementById("btn-binary");
+  const buttonDecimal = document.getElementById("btn-decimal");
+  const buttonN = document.getElementById("btn--");
+
+  for (let i = 2; i <= 9; i++) {
+    const button = document.getElementById(`btn-${i}`);
+    if (mode1) {
+      button.hidden = true;
+    } else {
+      button.hidden = false;
+    }
+  }
+
+  if (mode1) {
+    buttonBinary.disabled = true;
+    buttonDecimal.disabled = false;
+    buttonN.hidden = true;
+  } else {
+    buttonBinary.disabled = false;
+    buttonDecimal.disabled = true;
+    buttonN.hidden = false;
+  }
+  mode = mode1;
+}
+
+changeMode(mode);
