@@ -46,8 +46,8 @@ function binaryToDecimal(binary) {
 
 function sumBinary(num1, num2, bits) {
   // Convierte los números binarios a decimales
-  const decimal1 = binaryToDecimal(num1);
-  const decimal2 = binaryToDecimal(num2);
+  const decimal1 = complementoDosToDecimal(num1);
+  const decimal2 = complementoDosToDecimal(num2);
 
   // Realiza la suma decimal
   let sum = decimal1 + decimal2;
@@ -67,8 +67,8 @@ function sumBinary(num1, num2, bits) {
 
 function subtractBinary(num1, num2, bits) {
   // Convierte los números binarios a decimales
-  const decimal1 = binaryToDecimal(num1);
-  const decimal2 = binaryToDecimal(num2);
+  const decimal1 = complementoDosToDecimal(num1);
+  const decimal2 = complementoDosToDecimal(num2);
 
   // Realiza la resta decimal
   let difference = decimal1 - decimal2;
@@ -103,8 +103,7 @@ function multiplyBinary(num1, num2, bits) {
   // Si hay sobreflujo o subflujo, ajusta el valor
   if (product > maxDecimalValue || product < minDecimalValue) {
     alert(
-      `El resultado de la multiplicación se sale del rango de números repressentables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
-        bits * 2
+      `El resultado de la multiplicación se sale del rango de números repressentables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${bits * 2
       } bits`
     );
     product = "0";
@@ -154,7 +153,7 @@ function divideBinary(num1, num2, bits) {
 
 function leftShiftBinary(num, bits) {
   // Convierte el número binario a decimal
-  const decimal = binaryToDecimal(num);
+  const decimal = complementoDosToDecimal(num);
 
   // Realiza el desplazamiento a la izquierda
   let shifted = decimal << 1;
@@ -174,7 +173,7 @@ function leftShiftBinary(num, bits) {
 
 function rightShiftBinary(num, bits) {
   // Convierte el número binario a decimal
-  const decimal = binaryToDecimal(num);
+  const decimal = complementoDosToDecimal(num);
 
   // Realiza el desplazamiento a la derecha
   let shifted = decimal >> 1;
@@ -188,53 +187,113 @@ function rightShiftBinary(num, bits) {
   return complementoDos(shifted, bits);
 }
 
+
+
+// function calculate() {
+//   const num1 = document.getElementById("num1").value;
+//   const num2 = document.getElementById("num2").value;
+//   const operator = document.getElementById("operator").value;
+//   const bits = parseInt(document.getElementById("bits").value); // Número de bits seleccionados
+
+//   let result;
+
+//   switch (operator) {
+//     case "add":
+//       result = sumBinary(num1, num2, bits);
+//       break;
+//     case "subtract":
+//       result = subtractBinary(num1, num2, bits);
+//       break;
+//     case "multiply":
+//       result = multiplyBinary(num1, num2, bits);
+//       break;
+//     case "divide":
+//       result = divideBinary(num1, num2, bits);
+//       break;
+//     case "leftShift":
+//       result = leftShiftBinary(num1, bits);
+//       break;
+//     case "rightShift":
+//       result = rightShiftBinary(num1, bits);
+//       break;
+//     default:
+//       break;
+//   }
+
+//   if (typeof result === "object") {
+//     document.getElementById(
+//       "result"
+//     ).value = `Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
+//     document.getElementById(
+//       "result-decimal"
+//     ).value = `Cociente: ${complementoDosToDecimal(
+//       result.quotient
+//     )}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
+//   } else {
+//     // result = "0" + result
+//     document.getElementById("result").value = result;
+//     document.getElementById("result-decimal").value =
+//       complementoDosToDecimal(result);
+//   }
+// }
+
 function calculate() {
-  const num1 = document.getElementById("num1").value;
-  const num2 = document.getElementById("num2").value;
-  const operator = document.getElementById("operator").value;
-  const bits = parseInt(document.getElementById("bits").value); // Número de bits seleccionados
+  const numExpression = document.getElementById("num").textContent;
+  const bits = parseInt(document.getElementById("bits-options").value); 
 
-  let result;
 
-  switch (operator) {
-    case "add":
-      result = sumBinary(num1, num2, bits);
-      break;
-    case "subtract":
-      result = subtractBinary(num1, num2, bits);
-      break;
-    case "multiply":
-      result = multiplyBinary(num1, num2, bits);
-      break;
-    case "divide":
-      result = divideBinary(num1, num2, bits);
-      break;
-    case "leftShift":
-      result = leftShiftBinary(num1, bits);
-      break;
-    case "rightShift":
-      result = rightShiftBinary(num1, bits);
-      break;
-    default:
-      break;
+  let operator = "";
+  for (let i = 0; i < operators.length; i++) {
+    if (numExpression.includes(operators[i])) {
+      operator = operators[i];
+      break; 
+    }
   }
 
-  if (typeof result === "object") {
-    document.getElementById(
-      "result"
-    ).value = `Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
-    document.getElementById(
-      "result-decimal"
-    ).value = `Cociente: ${complementoDosToDecimal(
-      result.quotient
-    )}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
+  if (operator) {
+    
+    const [num1, num2] = numExpression.split(operator);
+    console.log("result", num1, num2, bits);
+
+    let result;
+
+    switch (operator) {
+      case "+":
+        result = sumBinary(num1, num2, bits);
+        console.log("resultsss=",result);
+        break;
+      case "-":
+        result = subtractBinary(num1, num2, bits);
+        break;
+      case "*":
+        result = multiplyBinary(num1, num2, bits);
+        break;
+      case "/":
+        result = divideBinary(num1, num2, bits);
+        break;
+      case "leftShift":
+        result = leftShiftBinary(num1, bits);
+        break;
+      case "rightShift":
+        result = rightShiftBinary(num1, bits);
+        break;
+      default:
+        break;
+    }
+
+    if (typeof result === "object") {
+      document.getElementById("numResult").textContent = `Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
+     document.getElementById("num-decimalResult").textContent = `Cociente: ${complementoDosToDecimal(result.quotient)}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
+    } else {
+      document.getElementById("numResult").textContent = result;
+       document.getElementById("num-decimalResult").textContent = complementoDosToDecimal(result);
+    }
+
   } else {
-    // result = "0" + result
-    document.getElementById("result").value = result;
-    document.getElementById("result-decimal").value =
-      complementoDosToDecimal(result);
+    console.error("No se encontró un operador en la expresión.");
   }
 }
+
 function convertToDecimal(inputId) {
   const binaryValue = document.getElementById(inputId).value;
   const decimalValue = complementoDosToDecimal(binaryValue);
@@ -307,42 +366,29 @@ function appendToNum(digit) {
     }
   }
 
-  if (
-    operatorCount < 1 ||
-    (operatorCount === 1 && !operators.includes(digit))
-  ) {
+  if (operatorCount < 1 || (operatorCount === 1 && !operators.includes(digit))) {
     if (mode) {
       if (operatorCount == 1) {
         document.getElementById("num").textContent = num + digit;
         let num1 = num + digit;
-        const decimalValues = num1
-          .split(operator)
-          .map((value) => complementoDosToDecimal(value))
-          .join(operator);
+        const decimalValues = num1.split(operator).map((value) => complementoDosToDecimal(value)).join(operator);
         document.getElementById("num-decimal").textContent = decimalValues;
       } else {
         document.getElementById("num").textContent = num + digit;
         let decimalValues = "";
-        operators.includes(digit)
-          ? (decimalValues = numDecimal + digit)
-          : (decimalValues = complementoDosToDecimal(num + digit));
+        operators.includes(digit) ? (decimalValues = numDecimal + digit) : (decimalValues = complementoDosToDecimal(num + digit));
         document.getElementById("num-decimal").textContent = decimalValues;
       }
     } else {
       if (operatorCount == 1) {
         document.getElementById("num-decimal").textContent = numDecimal + digit;
         let numDecimal1 = numDecimal + digit;
-        const binary = numDecimal1
-          .split(operator)
-          .map((value) => complementoDos(value, bits))
-          .join(operator);
+        const binary = numDecimal1.split(operator).map((value) => complementoDos(value, bits)).join(operator);
         document.getElementById("num").textContent = binary;
       } else {
         document.getElementById("num-decimal").textContent = numDecimal + digit;
         let binary = "";
-        operators.includes(digit)
-          ? (binary = num + digit)
-          : (binary = complementoDos(numDecimal + digit, bits));
+        operators.includes(digit) ? (binary = num + digit) : (binary = complementoDos(numDecimal + digit, bits));
         document.getElementById("num").textContent = binary;
       }
     }
@@ -372,10 +418,7 @@ function clearEntry() {
         }
       }
       if (operatorCount == 1) {
-        const decimalValues = num
-          .split(operator)
-          .map((value) => complementoDosToDecimal(value))
-          .join(operator);
+        const decimalValues = num.split(operator).map((value) => complementoDosToDecimal(value)).join(operator);
         document.getElementById("num-decimal").textContent = decimalValues;
       } else {
         const decimalValues = complementoDosToDecimal(num);
@@ -398,16 +441,13 @@ function clearEntry() {
         }
       }
       if (operatorCount1 == 1) {
-        const binary = numDecimal
-          .split(operator1)
-          .map((value) => complementoDos(value, bits))
-          .join(operator1);
+        const binary = numDecimal.split(operator1).map((value) => complementoDos(value, bits)).join(operator1);
         document.getElementById("num").textContent = binary;
       } else {
         const binary = complementoDos(numDecimal, bits);
         document.getElementById("num").textContent = binary;
       }
-      if (parseInt(document.getElementById("num").textContent) == 0) {
+      if (document.getElementById("num").textContent == "0") {
         document.getElementById("num").textContent = "";
       }
     }
@@ -415,12 +455,10 @@ function clearEntry() {
 }
 
 function clearAll() {
-  let num = document.getElementById("num").textContent;
-  let numDecimal = document.getElementById("num-decimal").textContent;
-  if (num.length > 0 || numDecimal.length > 0) {
-    document.getElementById("num").textContent = "";
-    document.getElementById("num-decimal").textContent = "";
-  }
+  document.getElementById("num").textContent = "";
+  document.getElementById("num-decimal").textContent = "";
+  document.getElementById("numResult").textContent = "";
+  document.getElementById("num-decimalResult").textContent = "";
 }
 
 function changeMode(mode1) {
