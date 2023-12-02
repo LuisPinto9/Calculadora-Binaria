@@ -294,6 +294,42 @@ function calculate() {
   }
 }
 
+function hasOperators(num) {
+  for (let i = 0; i < operators.length; i++) {
+    if (num.includes(operators[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function leftShift() {
+  let num = document.getElementById("num").textContent;
+  // Verificar que no haya otros operadores
+  if (!hasOperators(num)) {
+    // Desplazar a la izquierda
+    let shiftedNum = leftShiftBinary(num, 1);
+    document.getElementById("num").textContent = shiftedNum;
+    // Actualizar el valor decimal
+    document.getElementById("num-decimal").textContent = binaryToDecimal(shiftedNum);
+  }
+}
+
+// Función para realizar el desplazamiento a la derecha
+function rightShift() {
+  let num = document.getElementById("num").textContent;
+  // Verificar que no haya otros operadores
+  if (!hasOperators(num)) {
+    // Desplazar a la derecha
+    let shiftedNum = rightShiftBinary(num, 1);
+    document.getElementById("num").textContent = shiftedNum;
+    // Actualizar el valor decimal
+    document.getElementById("num-decimal").textContent = binaryToDecimal(shiftedNum);
+  }
+}
+
+
+
 function convertToDecimal(inputId) {
   const binaryValue = document.getElementById(inputId).value;
   const decimalValue = complementoDosToDecimal(binaryValue);
