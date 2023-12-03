@@ -1,5 +1,5 @@
 var mode = true;
-const operators = ["−", "+", "*", "/"];
+const operators = ["−", "+", "×", "/"];
 var bits = "4";
 
 function changeBits() {
@@ -218,7 +218,7 @@ function calculate() {
       case "−":
         result = subtractBinary(num1, num2);
         break;
-      case "*":
+      case "×":
         result = multiplyBinary(num1, num2);
         break;
       case "/":
