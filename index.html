@@ -276,7 +276,7 @@
                       <div class="col-md-4">
                         <button
                           class="btn btn-secondary btn-block"
-                          onclick="changeMode(true)"
+                          onclick="changeMode(true), styleChange()"
                           id="btn-binary"
                         >
                           Binario
@@ -285,7 +285,7 @@
                       <div class="col-md-4">
                         <button
                           class="btn btn-secondary btn-block"
-                          onclick="changeMode(false)"
+                          onclick="changeMode(false), styleChange()"
                           id="btn-decimal"
                         >
                           Decimal
@@ -325,7 +325,7 @@
                     </button>
                     <button
                       class="btn btn-secondary btn-block"
-                      onclick="appendToNum('—'), disableShift(), enableCalculate()"
+                      onclick="appendToNum('−'), disableShift(), enableCalculate()"
                     >
                       —
                     </button>

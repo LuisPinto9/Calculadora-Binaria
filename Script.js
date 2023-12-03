@@ -1,16 +1,36 @@
 var mode = true;
-const operators = ["—", "+", "*", "/", ">", "<"];
+const operators = ["−", "+", "*", "/"];
 var bits = "4";
 
 function changeBits() {
   bits = document.getElementById("bits-options").value;
+  document.getElementById("num").textContent = "";
+  document.getElementById("numResult").textContent = "";
+  document.getElementById("num-decimal").textContent = "";
+  document.getElementById("num-decimalResult").textContent = "";
 }
+
+function styleChange() {
+  if (mode) {
+    document.getElementById("num-decimal").classList.add("opaque");
+    document.getElementById("num-decimalResult").classList.add("opaque");
+    document.getElementById("num").classList.remove("opaque");
+    document.getElementById("numResult").classList.remove("opaque");
+  } else {
+    document.getElementById("num").classList.add("opaque");
+    document.getElementById("numResult").classList.add("opaque");
+    document.getElementById("num-decimal").classList.remove("opaque");
+    document.getElementById("num-decimalResult").classList.remove("opaque");
+  }
+}
+
+styleChange();
 
 function complementoDos(decimal) {
   if (decimal >= 0) {
     return decimalToBinary(decimal); // Si es positivo, devuelve la representación binaria normal
   } else {
-    let positiveBinary = decimalToBinary(Math.abs(decimal), bits); // Representación binaria positiva
+    let positiveBinary = decimalToBinary(Math.abs(decimal)); // Representación binaria positiva
     let invertedBinary = positiveBinary
       .split("")
       .map((bit) => (bit === "0" ? "1" : "0"))
@@ -28,6 +48,33 @@ function complementoDos(decimal) {
     return complement.toString(2);
   }
 }
+
+// function complementoDosWithoutBits(decimal) {
+//   if (decimal >= 0) {
+//     return decToBin(decimal); // Si es positivo, devuelve la representación binaria normal
+//   } else {
+//     let positiveBinary = decToBin(Math.abs(decimal)); // Representación binaria positiva
+//     let invertedBinary = positiveBinary
+//       .split("")
+//       .map((bit) => (bit === "0" ? "1" : "0"))
+//       .join(""); // Invierte los bits
+
+//     // Convierte el resultado invertido a decimal y le suma 1
+//     let complement = parseInt(invertedBinary, 2) + 1;
+
+//     // Convierte de nuevo a binario y devuelve el complemento a 2
+//     return complement.toString(2);
+//   }
+// }
+
+// function decToBin(dec) {
+//   let binary = (dec >>> 0).toString(2);
+//   if (dec >= 0) {
+//     return "0" + binary; // Agregar un 0 al principio para especificar el número positivo
+//   } else {
+//     return "1" + binary.slice(1); // Mantener el bit de signo y el resto de la representación binaria
+//   }
+// }
 
 function decimalToBinary(decimal) {
   let binary = (decimal >>> 0).toString(2); // Convierte a binario sin signo
@@ -69,7 +116,7 @@ function sumBinary(num1, num2) {
     alert(
       `El resultado de la suma se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
         bits * 2
-      } bits`
+      } bits.`
     );
     sum = sum & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
   }
@@ -95,7 +142,7 @@ function subtractBinary(num1, num2) {
     alert(
       `El resultado de la resta se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
         bits * 2
-      } bits`
+      } bits.`
     );
     difference = difference & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
   }
@@ -121,7 +168,7 @@ function multiplyBinary(num1, num2) {
     alert(
       `El resultado de la multiplicación se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
         bits * 2
-      } bits`
+      } bits.`
     );
     // product = "0";
     product = product & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
@@ -158,7 +205,7 @@ function divideBinary(num1, num2) {
     alert(
       `El resultado de la división se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
         bits * 2
-      } bits`
+      } bits.`
     );
     quotient = quotient & ((1 << bits) - 1); // Aplica máscara para ajustar el cociente al rango permitido
     remainder = remainder & ((1 << bits) - 1); // Aplica máscara para ajustar el residuo al rango permitido
@@ -195,7 +242,7 @@ function calculate() {
       case "+":
         result = sumBinary(num1, num2);
         break;
-      case "—":
+      case "−":
         result = subtractBinary(num1, num2);
         break;
       case "*":
@@ -285,6 +332,8 @@ function appendToNum(digit) {
   let numDecimal = document.getElementById("num-decimal").textContent;
   let operatorCount = 0;
   let operator = "";
+  let max = Math.pow(2, bits - 1) - 1;
+  let min = -Math.pow(2, bits - 1);
 
   for (let i = 0; i < operators.length; i++) {
     if (num.includes(operators[i])) {
@@ -300,38 +349,108 @@ function appendToNum(digit) {
     (operatorCount === 1 && !operators.includes(digit))
   ) {
     if (mode) {
-      if (operatorCount == 1) {
-        document.getElementById("num").textContent = num + digit;
-        let num1 = num + digit;
-        const decimalValues = num1
-          .split(operator)
-          .map((value) => complementoDosToDecimal(value))
-          .join(operator);
-        document.getElementById("num-decimal").textContent = decimalValues;
+      if (
+        complementoDosToDecimal(
+          document.getElementById("num").textContent + digit
+        ) > max ||
+        complementoDosToDecimal(
+          document.getElementById("num").textContent + digit
+        ) < min
+      ) {
+        alert(
+          `El número se sale del rango de números representables [${min}, ${max}], intente utilizar ${
+            bits * 2
+          } bits`
+        );
       } else {
-        document.getElementById("num").textContent = num + digit;
-        let decimalValues = "";
-        operators.includes(digit)
-          ? (decimalValues = numDecimal + digit)
-          : (decimalValues = complementoDosToDecimal(num + digit));
-        document.getElementById("num-decimal").textContent = decimalValues;
+        if (operatorCount == 1) {
+          let value = document.getElementById("num").textContent + digit;
+          value = value.split(operator);
+          if (value[1].length > bits) {
+            alert(
+              "El número sobrepasa los bits disponibles para su representación"
+            );
+          } else {
+            document.getElementById("num").textContent = num + digit;
+            let num1 = num + digit;
+            const decimalValues = num1
+              .split(operator)
+              .map((value) => complementoDosToDecimal(value))
+              .join(operator);
+            document.getElementById("num-decimal").textContent = decimalValues;
+          }
+        } else {
+          let value = document.getElementById("num").textContent + digit;
+          if (value.length > bits && !operators.includes(digit)) {
+            alert(
+              "El número sobrepasa los bits disponibles para su representación"
+            );
+          } else {
+            document.getElementById("num").textContent = num + digit;
+            let decimalValues = "";
+            operators.includes(digit)
+              ? (decimalValues = numDecimal + digit)
+              : (decimalValues = complementoDosToDecimal(num + digit));
+            document.getElementById("num-decimal").textContent = decimalValues;
+          }
+        }
       }
     } else {
-      if (operatorCount == 1) {
-        document.getElementById("num-decimal").textContent = numDecimal + digit;
-        let numDecimal1 = numDecimal + digit;
-        const binary = numDecimal1
-          .split(operator)
-          .map((value) => complementoDos(value, bits))
-          .join(operator);
-        document.getElementById("num").textContent = binary;
+      let cont = 0;
+      let decimal = document.getElementById("num-decimal").textContent + digit;
+      for (let index = 0; index < decimal.length; index++) {
+        if (decimal[index] == "-") {
+          cont++;
+        }
+      }
+      if (cont > 2) {
+        alert("No se pueden ingresar tantos signos '-'.");
+      } else if (parseInt(decimal) > max || parseInt(decimal) < min) {
+        alert(
+          `El número se sale del rango de números representables [${min}, ${max}], intente utilizar ${
+            bits * 2
+          } bits.`
+        );
       } else {
-        document.getElementById("num-decimal").textContent = numDecimal + digit;
-        let binary = "";
-        operators.includes(digit)
-          ? (binary = num + digit)
-          : (binary = complementoDos(numDecimal + digit, bits));
-        document.getElementById("num").textContent = binary;
+        if (operatorCount == 1) {
+          let validate = (document.getElementById("num-decimal").textContent =
+            numDecimal);
+          validate = validate.split(operator);
+          if (validate[1] > max || validate[1] < min) {
+            alert(
+              `ghfgfhdghdghfEl número se sale del rango de números representables [${min}, ${max}], intente utilizar ${
+                bits * 2
+              } bits.`
+            );
+          } else {
+            if (digit == "-") {
+              document.getElementById("num-decimal").textContent =
+                numDecimal + digit;
+              document.getElementById("num").textContent = num + "0";
+            } else {
+              document.getElementById("num-decimal").textContent =
+                numDecimal + digit;
+              let numDecimal1 = numDecimal + digit;
+              const binary = numDecimal1
+                .split(operator)
+                .map((value) => complementoDos(value))
+                .join(operator);
+              document.getElementById("num").textContent = binary;
+            }
+          }
+        } else {
+          document.getElementById("num-decimal").textContent =
+            numDecimal + digit;
+          if (document.getElementById("num-decimal").textContent !== "-") {
+            let binary = "";
+            operators.includes(digit)
+              ? (binary = num + digit)
+              : (binary = complementoDos(numDecimal + digit));
+            document.getElementById("num").textContent = binary;
+          } else {
+            document.getElementById("num").textContent = "";
+          }
+        }
       }
     }
   } else {
@@ -340,8 +459,8 @@ function appendToNum(digit) {
 }
 
 function clearResult() {
-  document.getElementById("numResult").textContent = ""
-  document.getElementById("num-decimalResult").textContent = ""
+  document.getElementById("numResult").textContent = "";
+  document.getElementById("num-decimalResult").textContent = "";
 }
 
 function clearEntry() {
@@ -403,14 +522,18 @@ function clearEntry() {
       if (operatorCount1 == 1) {
         const binary = numDecimal
           .split(operator1)
-          .map((value) => complementoDos(value, bits))
+          .map((value) => complementoDos(value))
           .join(operator1);
         document.getElementById("num").textContent = binary;
       } else {
-        const binary = complementoDos(numDecimal, bits);
-        document.getElementById("num").textContent = binary;
+        if (document.getElementById("num-decimal").textContent !== "-") {
+          const binary = complementoDos(numDecimal);
+          document.getElementById("num").textContent = binary;
+        } else {
+          document.getElementById("num").textContent = "";
+        }
       }
-      if (document.getElementById("num").textContent == "0") {
+      if (document.getElementById("num").textContent == 0) {
         document.getElementById("num").textContent = "";
       }
     }
