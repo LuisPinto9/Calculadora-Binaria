@@ -49,33 +49,6 @@ function complementoDos(decimal) {
   }
 }
 
-// function complementoDosWithoutBits(decimal) {
-//   if (decimal >= 0) {
-//     return decToBin(decimal); // Si es positivo, devuelve la representación binaria normal
-//   } else {
-//     let positiveBinary = decToBin(Math.abs(decimal)); // Representación binaria positiva
-//     let invertedBinary = positiveBinary
-//       .split("")
-//       .map((bit) => (bit === "0" ? "1" : "0"))
-//       .join(""); // Invierte los bits
-
-//     // Convierte el resultado invertido a decimal y le suma 1
-//     let complement = parseInt(invertedBinary, 2) + 1;
-
-//     // Convierte de nuevo a binario y devuelve el complemento a 2
-//     return complement.toString(2);
-//   }
-// }
-
-// function decToBin(dec) {
-//   let binary = (dec >>> 0).toString(2);
-//   if (dec >= 0) {
-//     return "0" + binary; // Agregar un 0 al principio para especificar el número positivo
-//   } else {
-//     return "1" + binary.slice(1); // Mantener el bit de signo y el resto de la representación binaria
-//   }
-// }
-
 function decimalToBinary(decimal) {
   let binary = (decimal >>> 0).toString(2); // Convierte a binario sin signo
 
