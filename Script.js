@@ -151,58 +151,7 @@ function subtractBinary(num1, num2) {
 
   return result;
 }
-function sumBinary4(num1, num2) {
-  let sum = "";
-  let carry = 0;
 
-  for (let i = num1.length - 1; i >= 0; i--) {
-    const bit1 = parseInt(num1[i]);
-    const bit2 = parseInt(num2[i]);
-
-    const total = bit1 + bit2 + carry;
-    const resultBit = total % 2;
-    carry = total >= 2 ? 1 : 0;
-
-    sum = resultBit.toString() + sum;
-  }
-
-  if (carry !== 0) {
-    sum = carry.toString() + sum;
-  }
-
-  return sum;
-}
-
-
-function sumBinary2(num1, num2) {
-  const maxLength = Math.max(num1.length, num2.length);
-
-  let sum = "";
-  let carry = 0;
-
-  // Itera sobre los dígitos binarios de derecha a izquierda
-  for (let i = maxLength - 1; i >= 0; i--) {
-    const bit1 = parseInt(num1[i]) || 0; // Si el bit no está presente, asume 0
-    const bit2 = parseInt(num2[i]) || 0;
-
-    // Realiza la suma de los bits y del acarreo anterior
-    const total = bit1 + bit2 + carry;
-
-    // Calcula el bit actual del resultado y el acarreo para la siguiente suma
-    const resultBit = total % 2;
-    carry = total >= 2 ? 1 : 0;
-
-    // Agrega el bit al inicio de la cadena del resultado
-    sum = resultBit.toString() + sum;
-  }
-
-  // Agrega el acarreo final si es necesario
-  if (carry !== 0) {
-    sum = carry.toString() + sum;
-  }
-
-  return sum;
-}
 function multiplyBinary(num1, num2) {
   const len1 = num1.length;
   const len2 = num2.length;
@@ -232,7 +181,7 @@ function multiplyBinary(num1, num2) {
 
   let finalResult = results[0] || "";
   for (let i = 1; i < results.length; i++) {
-      finalResult = sumBinary4(finalResult, results[i]);
+      finalResult = sumBinary3(finalResult, results[i]);
   }
 
   return finalResult;
