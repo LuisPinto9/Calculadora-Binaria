@@ -73,6 +73,172 @@ function complementoDosToDecimal(binary) {
 }
 
 function sumBinary(num1, num2) {
+  // Asegura que ambas cadenas tengan la misma longitud agregando ceros a la izquierda si es necesario
+  const maxLength = Math.max(num1.length, num2.length);
+
+  const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
+  const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
+
+  let sum = "";
+  let carry = 0;
+
+  let carryant = 0;
+  // Itera sobre los dígitos binarios de derecha a izquierda
+  for (let i = maxLength - 1; i >= 0; i--) {
+    const bit1 = parseInt(num1[i]);
+    const bit2 = parseInt(num2[i]);
+
+    // Realiza la suma de los bits y del acarreo anterior
+    const total = bit1 + bit2 + carry;
+    carryant = carry;
+    // Calcula el bit actual del resultado y el acarreo para la siguiente suma
+    const resultBit = total % 2;
+    carry = total >= 2 ? 1 : 0;
+    // Agrega el bit al inicio de la cadena del resultado
+    sum = resultBit.toString() + sum;
+  }
+
+  if (carryant != carry) {
+    alert(
+      `El resultado de la suma se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
+        bits * 2
+      } bits.`
+    );
+  }
+
+  return sum;
+}
+
+function subtractBinary(num1, num2) {
+  // Asegura que ambas cadenas tengan la misma longitud agregando ceros a la izquierda si es necesario
+  const maxLength = Math.max(num1.length, num2.length);
+
+  const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
+  const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
+
+  let result = "";
+  let borrow = 0;
+  let borrowant = 0;
+
+  // Itera sobre los dígitos binarios de derecha a izquierda
+  for (let i = maxLength - 1; i >= 0; i--) {
+    const bit1 = parseInt(num1[i]);
+    const bit2 = parseInt(num2[i]);
+
+    // Realiza la resta de los bits y del préstamo anterior
+    let total = bit1 - bit2 - borrow;
+    borrowant = borrow;
+
+    // Ajusta el préstamo según el resultado de la resta
+    if (total < 0) {
+      total += 2;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+
+    // Agrega el bit al inicio de la cadena del resultado
+    result = total.toString() + result;
+  }
+
+  if (borrowant !== borrow) {
+    alert(
+      `El resultado de la resta se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
+        bits * 2
+      } bits.`
+    );
+  }
+
+  return result;
+}
+function sumBinary4(num1, num2) {
+  let sum = "";
+  let carry = 0;
+
+  for (let i = num1.length - 1; i >= 0; i--) {
+    const bit1 = parseInt(num1[i]);
+    const bit2 = parseInt(num2[i]);
+
+    const total = bit1 + bit2 + carry;
+    const resultBit = total % 2;
+    carry = total >= 2 ? 1 : 0;
+
+    sum = resultBit.toString() + sum;
+  }
+
+  if (carry !== 0) {
+    sum = carry.toString() + sum;
+  }
+
+  return sum;
+}
+
+
+function sumBinary2(num1, num2) {
+  const maxLength = Math.max(num1.length, num2.length);
+
+  let sum = "";
+  let carry = 0;
+
+  // Itera sobre los dígitos binarios de derecha a izquierda
+  for (let i = maxLength - 1; i >= 0; i--) {
+    const bit1 = parseInt(num1[i]) || 0; // Si el bit no está presente, asume 0
+    const bit2 = parseInt(num2[i]) || 0;
+
+    // Realiza la suma de los bits y del acarreo anterior
+    const total = bit1 + bit2 + carry;
+
+    // Calcula el bit actual del resultado y el acarreo para la siguiente suma
+    const resultBit = total % 2;
+    carry = total >= 2 ? 1 : 0;
+
+    // Agrega el bit al inicio de la cadena del resultado
+    sum = resultBit.toString() + sum;
+  }
+
+  // Agrega el acarreo final si es necesario
+  if (carry !== 0) {
+    sum = carry.toString() + sum;
+  }
+
+  return sum;
+}
+function multiplyBinary(num1, num2) {
+  const len1 = num1.length;
+  const len2 = num2.length;
+
+  let results = [];
+
+  for (let i = len2 - 1; i >= 0; i--) {
+      let result = "";
+      let carry = 0;
+
+      for (let j = len1 - 1; j >= 0; j--) {
+          const bit1 = parseInt(num1[j]);
+          const bit2 = parseInt(num2[i]);
+          const multiplication = bit1 * bit2 + carry;
+          const resultBit = multiplication % 2;
+          carry = Math.floor(multiplication / 2);
+
+          result = resultBit.toString() + result;
+      }
+
+      if (carry !== 0) {
+          result = carry.toString() + result;
+      }
+
+      results.push(result.padEnd(len1 + len2 - 1 - i, "0"));
+  }
+
+  let finalResult = results[0] || "";
+  for (let i = 1; i < results.length; i++) {
+      finalResult = sumBinary4(finalResult, results[i]);
+  }
+
+  return finalResult;
+}
+
+function sumBinary3(num1, num2) {
   // Convierte los números binarios a decimales
   const decimal1 = complementoDosToDecimal(num1);
   const decimal2 = complementoDosToDecimal(num2);
@@ -86,11 +252,6 @@ function sumBinary(num1, num2) {
 
   // Si hay sobreflujo, ajusta el valor
   if (sum > maxDecimalValue || sum < minDecimalValue) {
-    alert(
-      `El resultado de la suma se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
-        bits * 2
-      } bits.`
-    );
     sum = sum & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
   }
 
@@ -98,58 +259,6 @@ function sumBinary(num1, num2) {
   return complementoDos(sum);
 }
 
-function subtractBinary(num1, num2) {
-  // Convierte los números binarios a decimales
-  const decimal1 = complementoDosToDecimal(num1);
-  const decimal2 = complementoDosToDecimal(num2);
-
-  // Realiza la resta decimal
-  let difference = decimal1 - decimal2;
-
-  // Verifica si hay sobreflujo o subflujo
-  const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
-  const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
-
-  // Si hay sobreflujo o subflujo, ajusta el valor
-  if (difference > maxDecimalValue || difference < minDecimalValue) {
-    alert(
-      `El resultado de la resta se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
-        bits * 2
-      } bits.`
-    );
-    difference = difference & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
-  }
-
-  // Convierte el resultado a binario en complemento a 2
-  return complementoDos(difference);
-}
-
-function multiplyBinary(num1, num2) {
-  // Convierte los números binarios a decimales
-  const decimal1 = complementoDosToDecimal(num1);
-  const decimal2 = complementoDosToDecimal(num2);
-
-  // Realiza la multiplicación decimal
-  let product = decimal1 * decimal2;
-
-  // Verifica si hay sobreflujo o subflujo
-  const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
-  const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
-
-  // Si hay sobreflujo o subflujo, ajusta el valor
-  if (product > maxDecimalValue || product < minDecimalValue) {
-    alert(
-      `El resultado de la multiplicación se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
-        bits * 2
-      } bits.`
-    );
-    // product = "0";
-    product = product & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
-  }
-
-  // Convierte el resultado a binario en complemento a 2
-  return complementoDos(product);
-}
 
 function divideBinary(num1, num2) {
   // Convierte los números binarios a decimales
@@ -207,7 +316,10 @@ function calculate() {
   }
 
   if (operator) {
-    const [num1, num2] = numExpression.split(operator);
+    let [num1, num2] = numExpression.split(operator);
+
+    num1 = num1.padStart(bits, num1[0]);
+    num2 = num2.padStart(bits, num2[0]);
 
     let result;
 
