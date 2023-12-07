@@ -153,61 +153,79 @@ function subtractBinary(num1, num2) {
 }
 
 function multiplyBinary(num1, num2) {
-  const len1 = num1.length;
-  const len2 = num2.length;
 
-  let results = [];
-
-  for (let i = len2 - 1; i >= 0; i--) {
-      let result = "";
-      let carry = 0;
-
-      for (let j = len1 - 1; j >= 0; j--) {
-          const bit1 = parseInt(num1[j]);
-          const bit2 = parseInt(num2[i]);
-          const multiplication = bit1 * bit2 + carry;
-          const resultBit = multiplication % 2;
-          carry = Math.floor(multiplication / 2);
-
-          result = resultBit.toString() + result;
-      }
-
-      if (carry !== 0) {
-          result = carry.toString() + result;
-      }
-
-      results.push(result.padEnd(len1 + len2 - 1 - i, "0"));
-  }
-
-  let finalResult = results[0] || "";
-  for (let i = 1; i < results.length; i++) {
-      finalResult = sumBinary3(finalResult, results[i]);
-  }
-
-  return finalResult;
-}
-
-function sumBinary3(num1, num2) {
-  // Convierte los números binarios a decimales
-  const decimal1 = complementoDosToDecimal(num1);
-  const decimal2 = complementoDosToDecimal(num2);
-
-  // Realiza la suma decimal
-  let sum = decimal1 + decimal2;
-
-  // Verifica si hay sobreflujo
   const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
   const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
 
-  // Si hay sobreflujo, ajusta el valor
-  if (sum > maxDecimalValue || sum < minDecimalValue) {
-    sum = sum & ((1 << bits) - 1); // Aplica máscara para ajustar al rango permitido
+  let num1Decimal = complementoDosToDecimal(num1);
+  let num2Decimal = complementoDosToDecimal(num2);
+
+  let decimalResult = num1Decimal * num2Decimal;
+
+  let A = "";
+  while (A.length < bits) {
+    A += "0";
   }
 
-  // Convierte el resultado a binario en complemento a 2
-  return complementoDos(sum);
-}
+  function sum(num1, num2) {
+    // Asegura que ambas cadenas tengan la misma longitud agregando ceros a la izquierda si es necesario
+    const maxLength = Math.max(num1.length, num2.length);
 
+    if (num1.length !== num2.length) {
+      if (num1.length < num2.length) {
+        while (num1.length < num2.length) {
+          num1 = "0" + num1;
+        }
+      } else if (num1.length > num2.length) {
+        while (num1.length > num2.length) {
+          num2 = "0" + num2;
+        }
+      }
+    }
+
+    let sum = "";
+    let carry = 0;
+
+    // Itera sobre los dígitos binarios de derecha a izquierda
+    for (let i = maxLength - 1; i >= 0; i--) {
+      const bit1 = parseInt(num1[i]);
+      const bit2 = parseInt(num2[i]);
+
+      // Realiza la suma de los bits y del acarreo anterior
+      const total = bit1 + bit2 + carry;
+      // Calcula el bit actual del resultado y el acarreo para la siguiente suma
+      const resultBit = total % 2;
+      carry = total >= 2 ? 1 : 0;
+      // Agrega el bit al inicio de la cadena del resultado
+      sum = resultBit.toString() + sum;
+    }
+
+    if (sum.length > bits) {
+      sum = sum.slice(-bits); // Recorta los bits sobrantes manteniendo solo los últimos 'bits' dígitos
+    }
+
+    return sum;
+  }
+
+  while (complementoDosToDecimal(num2) !== 0) {
+    if (num2[num2.length - 1] === "1") {
+      A = sum(A, num1);
+    }
+
+    num1 = num1.slice(0) + "0"; // Agregar un 0 a la derecha de X (multiplicación por 2 en binario)
+    num2 = "0" + num2.slice(0, -1); // Quitar el bit menos significativo de Y (división por 2 en binario)
+  }
+
+  if (decimalResult !== complementoDosToDecimal(A)) {
+    alert(
+      `El resultado de la multiplicación se sale del rango de números representables [${minDecimalValue}, ${maxDecimalValue}], intente utilizar ${
+        bits * 2
+      } bits.`
+    );
+  }
+
+  return A;
+}
 
 function divideBinary(num1, num2) {
   // Convierte los números binarios a decimales
