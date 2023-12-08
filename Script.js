@@ -104,7 +104,7 @@ function sumBinary(num1, num2) {
         bits * 2
       } bits.`
     );
-    sum = "Sobreflujo"
+    sum = "Sobreflujo";
   }
 
   return sum;
@@ -148,7 +148,7 @@ function subtractBinary(num1, num2) {
         bits * 2
       } bits.`
     );
-    result = "Sobreflujo"
+    result = "Sobreflujo";
   }
 
   return result;
@@ -253,8 +253,7 @@ function multiplyBinary(num1, num2) {
         bits * 2
       } bits.`
     );
-    A = "Sobreflujo"
-
+    A = "Sobreflujo";
   }
 
   return A;
@@ -343,13 +342,11 @@ function divideBinary(num1, num2) {
         bits * 2
       } bits.`
     );
-    
+
     return { quotient: "Sobreflujo", remainder: "Sobreflujo" };
-  }else{
+  } else {
     return { quotient: C, remainder: R };
-
   }
-
 }
 
 function enableCalculate() {
@@ -393,35 +390,31 @@ function calculate() {
     }
     //osea la division
     if (typeof result === "object") {
-      
       document.getElementById(
         "numResult"
       ).textContent = `= Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
-      
-      if(result.quotient =="Sobreflujo" || result.remainder == "Sobreflujo"){
+
+      if (result.quotient == "Sobreflujo" || result.remainder == "Sobreflujo") {
         document.getElementById(
           "num-decimalResult"
-        ).textContent = `= Cociente: ${ result.quotient}, Residuo: ${result.remainder}`;
-      }else{
+        ).textContent = `= Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
+      } else {
         document.getElementById(
           "num-decimalResult"
         ).textContent = `= Cociente: ${complementoDosToDecimal(
           result.quotient
         )}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
       }
-
-
     } else {
       document.getElementById("numResult").textContent = "= " + result;
-    
-      if(result=="Sobreflujo"){
+
+      if (result == "Sobreflujo") {
         document.getElementById("num-decimalResult").textContent =
-        "= " + result;
-      }else{
+          "= " + result;
+      } else {
         document.getElementById("num-decimalResult").textContent =
-        "= " + complementoDosToDecimal(result);
+          "= " + complementoDosToDecimal(result);
       }
-      
     }
   } else {
     console.error("No se encontró un operador en la expresión.");
