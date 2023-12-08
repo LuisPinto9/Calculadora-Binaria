@@ -1,5 +1,4 @@
 <h1>Desarrollo del taller de la calculadora binaria - Grupo 2</h1>
-<br>
 <h2>Arquitectura de Computadores</h2>
 <br>
 <p>Integrantes:</p>
