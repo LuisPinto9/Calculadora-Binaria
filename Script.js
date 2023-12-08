@@ -148,6 +148,7 @@ function subtractBinary(num1, num2) {
         bits * 2
       } bits.`
     );
+    result = "Sobreflujo"
   }
 
   return result;
@@ -252,6 +253,8 @@ function multiplyBinary(num1, num2) {
         bits * 2
       } bits.`
     );
+    A = "Sobreflujo"
+
   }
 
   return A;
@@ -340,9 +343,13 @@ function divideBinary(num1, num2) {
         bits * 2
       } bits.`
     );
+    
+    return { quotient: "Sobreflujo", remainder: "Sobreflujo" };
+  }else{
+    return { quotient: C, remainder: R };
+
   }
 
-  return { quotient: C, remainder: R };
 }
 
 function enableCalculate() {
@@ -384,19 +391,37 @@ function calculate() {
       default:
         break;
     }
+    //osea la division
     if (typeof result === "object") {
+      
       document.getElementById(
         "numResult"
       ).textContent = `= Cociente: ${result.quotient}, Residuo: ${result.remainder}`;
-      document.getElementById(
-        "num-decimalResult"
-      ).textContent = `= Cociente: ${complementoDosToDecimal(
-        result.quotient
-      )}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
+      
+      if(result.quotient =="Sobreflujo" || result.remainder == "Sobreflujo"){
+        document.getElementById(
+          "num-decimalResult"
+        ).textContent = `= Cociente: ${ result.quotient}, Residuo: ${result.remainder}`;
+      }else{
+        document.getElementById(
+          "num-decimalResult"
+        ).textContent = `= Cociente: ${complementoDosToDecimal(
+          result.quotient
+        )}, Residuo: ${complementoDosToDecimal(result.remainder)}`;
+      }
+
+
     } else {
       document.getElementById("numResult").textContent = "= " + result;
-      document.getElementById("num-decimalResult").textContent =
+    
+      if(result=="Sobreflujo"){
+        document.getElementById("num-decimalResult").textContent =
+        "= " + result;
+      }else{
+        document.getElementById("num-decimalResult").textContent =
         "= " + complementoDosToDecimal(result);
+      }
+      
     }
   } else {
     console.error("No se encontró un operador en la expresión.");
