@@ -104,6 +104,7 @@ function sumBinary(num1, num2) {
         bits * 2
       } bits.`
     );
+    sum = "Sobreflujo"
   }
 
   return sum;
@@ -196,12 +197,8 @@ function subtract(num1, num2) {
   // Asegura que ambas cadenas tengan la misma longitud agregando ceros a la izquierda si es necesario
   const maxLength = Math.max(num1.length, num2.length);
 
-  const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
-  const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
-
   let result = "";
   let borrow = 0;
-  let borrowant = 0;
 
   // Itera sobre los dígitos binarios de derecha a izquierda
   for (let i = maxLength - 1; i >= 0; i--) {
@@ -210,7 +207,6 @@ function subtract(num1, num2) {
 
     // Realiza la resta de los bits y del préstamo anterior
     let total = bit1 - bit2 - borrow;
-    borrowant = borrow;
 
     // Ajusta el préstamo según el resultado de la resta
     if (total < 0) {
