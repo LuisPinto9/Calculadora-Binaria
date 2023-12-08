@@ -152,8 +152,82 @@ function subtractBinary(num1, num2) {
   return result;
 }
 
-function multiplyBinary(num1, num2) {
+function sum(num1, num2) {
+  // Asegura que ambas cadenas tengan la misma longitud agregando ceros a la izquierda si es necesario
+  const maxLength = Math.max(num1.length, num2.length);
 
+  if (num1.length !== num2.length) {
+    if (num1.length < num2.length) {
+      while (num1.length < num2.length) {
+        num1 = "0" + num1;
+      }
+    } else if (num1.length > num2.length) {
+      while (num1.length > num2.length) {
+        num2 = "0" + num2;
+      }
+    }
+  }
+
+  let sum = "";
+  let carry = 0;
+
+  // Itera sobre los dígitos binarios de derecha a izquierda
+  for (let i = maxLength - 1; i >= 0; i--) {
+    const bit1 = parseInt(num1[i]);
+    const bit2 = parseInt(num2[i]);
+
+    // Realiza la suma de los bits y del acarreo anterior
+    const total = bit1 + bit2 + carry;
+    // Calcula el bit actual del resultado y el acarreo para la siguiente suma
+    const resultBit = total % 2;
+    carry = total >= 2 ? 1 : 0;
+    // Agrega el bit al inicio de la cadena del resultado
+    sum = resultBit.toString() + sum;
+  }
+
+  if (sum.length > bits) {
+    sum = sum.slice(-bits); // Recorta los bits sobrantes manteniendo solo los últimos 'bits' dígitos
+  }
+
+  return sum;
+}
+
+function subtract(num1, num2) {
+  // Asegura que ambas cadenas tengan la misma longitud agregando ceros a la izquierda si es necesario
+  const maxLength = Math.max(num1.length, num2.length);
+
+  const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
+  const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
+
+  let result = "";
+  let borrow = 0;
+  let borrowant = 0;
+
+  // Itera sobre los dígitos binarios de derecha a izquierda
+  for (let i = maxLength - 1; i >= 0; i--) {
+    const bit1 = parseInt(num1[i]);
+    const bit2 = parseInt(num2[i]);
+
+    // Realiza la resta de los bits y del préstamo anterior
+    let total = bit1 - bit2 - borrow;
+    borrowant = borrow;
+
+    // Ajusta el préstamo según el resultado de la resta
+    if (total < 0) {
+      total += 2;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+
+    // Agrega el bit al inicio de la cadena del resultado
+    result = total.toString() + result;
+  }
+
+  return result;
+}
+
+function multiplyBinary(num1, num2) {
   const maxDecimalValue = Math.pow(2, bits - 1) - 1; // Calcula el máximo valor positivo representable
   const minDecimalValue = -Math.pow(2, bits - 1); // Calcula el máximo valor negativo representable
 
@@ -165,46 +239,6 @@ function multiplyBinary(num1, num2) {
   let A = "";
   while (A.length < bits) {
     A += "0";
-  }
-
-  function sum(num1, num2) {
-    // Asegura que ambas cadenas tengan la misma longitud agregando ceros a la izquierda si es necesario
-    const maxLength = Math.max(num1.length, num2.length);
-
-    if (num1.length !== num2.length) {
-      if (num1.length < num2.length) {
-        while (num1.length < num2.length) {
-          num1 = "0" + num1;
-        }
-      } else if (num1.length > num2.length) {
-        while (num1.length > num2.length) {
-          num2 = "0" + num2;
-        }
-      }
-    }
-
-    let sum = "";
-    let carry = 0;
-
-    // Itera sobre los dígitos binarios de derecha a izquierda
-    for (let i = maxLength - 1; i >= 0; i--) {
-      const bit1 = parseInt(num1[i]);
-      const bit2 = parseInt(num2[i]);
-
-      // Realiza la suma de los bits y del acarreo anterior
-      const total = bit1 + bit2 + carry;
-      // Calcula el bit actual del resultado y el acarreo para la siguiente suma
-      const resultBit = total % 2;
-      carry = total >= 2 ? 1 : 0;
-      // Agrega el bit al inicio de la cadena del resultado
-      sum = resultBit.toString() + sum;
-    }
-
-    if (sum.length > bits) {
-      sum = sum.slice(-bits); // Recorta los bits sobrantes manteniendo solo los últimos 'bits' dígitos
-    }
-
-    return sum;
   }
 
   while (complementoDosToDecimal(num2) !== 0) {
@@ -237,6 +271,60 @@ function divideBinary(num1, num2) {
     return "División por cero";
   }
 
+  if (decimal1 < 0) {
+    let conversion = Math.abs(decimal1);
+    num1 = complementoDos(conversion);
+  }
+
+  if (decimal2 < 0) {
+    let conversion = Math.abs(decimal2);
+    num2 = complementoDos(conversion);
+  }
+
+  let R = num1;
+  let C = "";
+
+  while (C.length < bits) {
+    C += "0";
+  }
+
+  let n1 = "1";
+
+  while (n1.length < bits) {
+    n1 = "0" + n1;
+  }
+
+  while (R >= num2) {
+    R = subtract(R, num2);
+    C = sum(C, n1);
+  }
+
+  let aux = "1";
+  while (aux.length < bits) {
+    aux = "0" + aux;
+  }
+
+  if (decimal1 < 0 && decimal2 > 0) {
+    C = C.split("")
+      .map((bit) => (bit === "0" ? "1" : "0"))
+      .join(""); // Invierte los bits
+    C = sum(C, aux);
+    R = R.split("")
+      .map((bit) => (bit === "0" ? "1" : "0"))
+      .join(""); // Invierte los bits
+    R = sum(R, aux);
+  } else if (decimal1 > 0 && decimal2 < 0) {
+    C = C.split("")
+      .map((bit) => (bit === "0" ? "1" : "0"))
+      .join(""); // Invierte los bits
+    C = sum(C, aux);
+  } else if (decimal1 < 0 && decimal2 < 0) {
+    R = R.split("")
+      .map((bit) => (bit === "0" ? "1" : "0"))
+      .join(""); // Invierte los bits
+    R = sum(R, aux);
+  }
+
   // Realiza la división decimal
   let quotient = Math.trunc(decimal1 / decimal2);
   let remainder = decimal1 % decimal2;
@@ -256,15 +344,9 @@ function divideBinary(num1, num2) {
         bits * 2
       } bits.`
     );
-    quotient = quotient & ((1 << bits) - 1); // Aplica máscara para ajustar el cociente al rango permitido
-    remainder = remainder & ((1 << bits) - 1); // Aplica máscara para ajustar el residuo al rango permitido
   }
 
-  // Convierte el cociente y el residuo a binario en complemento a 2
-  const quotientBinary = complementoDos(quotient);
-  const remainderBinary = complementoDos(remainder);
-
-  return { quotient: quotientBinary, remainder: remainderBinary };
+  return { quotient: C, remainder: R };
 }
 
 function enableCalculate() {
